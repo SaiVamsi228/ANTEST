@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mock Interview Platform</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        background: #fff;
+        width: 600px;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      #interview-area {
+        margin-top: 20px;
+      }
+      #vapi-btn {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      #vapi-btn:hover {
+        background: #45a049;
+      }
+      #transcript {
+        margin-top: 20px;
+        min-height: 150px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 5px;
+        background: #f9f9f9;
+        overflow-y: auto;
+      }
+    </style>
+    <script type="module">
+      import Vapi from "@vapi-ai/web";
+
+      // Initialize the Vapi assistant with your public key
+      const vapi = new Vapi("your-public-key");
+
+      // Start the assistant when the button is clicked
+      function startAssistant() {
+        vapi.start({
+          model: {
+            provider: "openai",
+            model: "gpt-3.5-turbo",
+            messages: [
+              {
+                role: "system",
+                content: "You are an assistant.",
+              },
+            ],
+          },
+          voice: {
+            provider: "11labs",
+            voiceId: "burt",
+          },
+        });
+
+        // Set up event listeners
+        vapi.on("call-start", () => {
+          console.log("Call has started");
+        });
+
+        vapi.on("call-end", () => {
+          console.log("Call has ended");
+        });
+
+        vapi.on("message", (message) => {
+          console.log("Message received:", message);
+        });
+
+        vapi.on("error", (e) => {
+          console.error("Error:", e);
+        });
+      }
+
+      // Stop the assistant
+      function stopAssistant() {
+        vapi.stop();
+        console.log("Assistant stopped");
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Mock Interview Platform</h1>
+
+      <div id="interview-area">
+        <!-- Start Vapi Button -->
+        <button id="vapi-btn" onclick="startAssistant()">
+          🎤 Start Interview
+        </button>
+        <button onclick="stopAssistant()">Stop Assistant</button>
+
+        <!-- Display transcript -->
+        <div id="transcript">
+          <p><em>Interview transcript will appear here...</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder for Vapi script -->
+    <script>
+      const vapiBtn = document.getElementById("vapi-btn");
+      const transcript = document.getElementById("transcript");
+
+      vapiBtn.addEventListener("click", () => {
+        // TODO: Add Vapi integration here
+        // Example: Initialize Vapi, start recording, and display transcript
+        transcript.innerHTML +=
+          "<p><strong>Vapi:</strong> This is where the question will appear.</p>";
+      });
+    </script>
+  </body>
+</html>
